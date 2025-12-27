@@ -22,14 +22,14 @@ class stack
 		operator delete(data_);
 	}
 
-
 	template <typename... Args>
 	void emplace(Args&&... args)
 	{
 		T* new_data = (T*)operator new((size_ + 1) * sizeof(T));
 
-		for (int i = 0; i < size_; i++){
-			new (new_data + i) T(std::move(data_[i])); 
+		for (int i = 0; i < size_; i++)
+		{
+			new (new_data + i) T(std::move(data_[i]));
 			data_[i].~T();
 		}
 
@@ -38,18 +38,16 @@ class stack
 		data_ = new_data;
 
 		new (data_ + size_) T(std::forward<Args>(args)...);
-		size_++; 
-
-		
+		size_++;
 	}
 
 	void push(T&& value)
 	{
-		
 		T* new_data = (T*)operator new((size_ + 1) * sizeof(T));
 
-		for (int i = 0; i < size_; i++){
-			new (new_data + i) T(std::move(data_[i])); 
+		for (int i = 0; i < size_; i++)
+		{
+			new (new_data + i) T(std::move(data_[i]));
 			data_[i].~T();
 		}
 
@@ -59,8 +57,6 @@ class stack
 
 		new (data_ + size_) T(std::move(value));
 		size_++;
-
-		
 	}
 
 	void clear() noexcept
@@ -76,8 +72,9 @@ class stack
 	{
 		T* new_data = (T*)operator new((size_ + 1) * sizeof(T));
 
-		for (int i = 0; i < size_; i++){
-			new (new_data + i) T(std::move(data_[i])); 
+		for (int i = 0; i < size_; i++)
+		{
+			new (new_data + i) T(std::move(data_[i]));
 			data_[i].~T();
 		}
 
@@ -87,26 +84,25 @@ class stack
 
 		new (data_ + size_) T(value);
 		size_++;
-
 	}
 
 	void pop()
 	{
-		 
-		if (empty()){
+		if (empty())
+		{
 			throw std::underflow_error("Stack empty");
 		}
 
 		--size_;
 
 		data_[size_].~T();
-
 	}
 
 	T& top()
 	{
-		if (empty()){
-			throw std::underflow_error("Stack empty");	
+		if (empty())
+		{
+			throw std::underflow_error("Stack empty");
 		}
 
 		return data_[size_ - 1];
@@ -114,18 +110,16 @@ class stack
 
 	const T& top() const
 	{
-
-		if (empty()){
+		if (empty())
+		{
 			throw std::underflow_error("Stack empty");
 		}
-		
+
 		return data_[size_ - 1];
 	}
-
-	
 
    private:
 	T* data_;
 	size_t size_;
 };
-}  
+}  // namespace bmstu
